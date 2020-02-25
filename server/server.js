@@ -11,9 +11,7 @@ const corsOptions = {
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
-            // callback(null, true);
-            console.log('requesting domain', origin);
-            callback(new Error('Not allowed by CORS'))
+            callback(null, true);
         }
     }
 }
