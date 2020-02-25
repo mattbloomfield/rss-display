@@ -12,6 +12,7 @@ const corsOptions = {
             callback(null, true)
         } else {
             // callback(null, true);
+            console.log('requesting domain', origin);
             callback(new Error('Not allowed by CORS'))
         }
     }
