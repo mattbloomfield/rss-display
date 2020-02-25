@@ -17,7 +17,7 @@ const corsOptions = {
     }
 }
 
-app.get('/', cors(corsOptions), async function (req, res) {
+app.get('/api/', cors(corsOptions), async function (req, res) {
     console.log('getting feed');
     const RSS_URL = `http://feeds.washingtonpost.com/rss/world`;
     Feed.load(RSS_URL, function (err, rss) {
