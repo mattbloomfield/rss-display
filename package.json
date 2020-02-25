@@ -1,0 +1,20 @@
+{
+  "name": "rss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rss.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Matt Bloomfield",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "metascraper": "^5.11.4",
+    "metascraper-image": "^5.11.1",
+    "node-fetch": "^2.6.0",
+    "rss-to-json": "^1.0.5",
+    "server": "^1.0.26"
+  }
+}
