@@ -1,4 +1,3 @@
-// const RSS_URL = `https://codepen.io/picks/feed/`;
 
 const init = () => {
   getFeed();
@@ -11,7 +10,7 @@ const init = () => {
 }
 
 function getFeed() {
-  const RSS_URL = `http://localhost:2482`;
+  const RSS_URL = `http://freeenterprise.tv/api/`;
   $.ajax(RSS_URL, {
     dataType: "json",
     success: function (data) {
