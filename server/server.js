@@ -5,7 +5,7 @@ const Feed = require('rss-to-json');
 
 const port = 2482;
 
-const whitelist = ['http://localhost:54567', 'http://127.0.0.1:54567']
+const whitelist = ['http://localhost:54567', 'http://127.0.0.1:54567', 'http://freeenterprise.tv/']
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
