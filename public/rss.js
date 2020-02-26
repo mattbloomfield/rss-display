@@ -1,30 +1,44 @@
 
-const init = () => {
-  getFeed();
-  const slideInterval = setInterval(() => {
+const slideRotationInterval = 1000 * 10;
+const dataRefreshInterval = 1000 * 60 * 60;
+
+const init = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const source = urlParams.get('feed');
+  await getFeed(source);
+  setInterval(() => {
     rearrangeSlides();
-  }, 10500);
-  const feedInterval = setInterval(() => {
-    getFeed();
-  }, 1000 * 60 * 60);
+  }, slideRotationInterval);
+  setInterval(() => {
+    getFeed(source);
+  }, dataRefreshInterval);
 }
 
-function getFeed() {
-  const RSS_URL = `http://freeenterprise.tv/api/`;
-  $.ajax(RSS_URL, {
-    dataType: "json",
-    success: function (data) {
-      $('#App').html('');
-      data.items.forEach(item => {
-        renderSlide(item);
-      });
-    }
+function getFeed(source) {
+  return new Promise((resolve, reject) => {
+    const rssUrl = `/api/?feed=${source}`;
+    $.ajax(rssUrl, {
+      dataType: "json",
+      success: function (data) {
+        $('#App').html('');
+        data.items.forEach(item => {
+          renderSlide(item);
+        });
+        resolve();
+      },
+      error: () => {
+        reject();
+      }
+    });
   });
 }
 
 function rearrangeSlides() {
-  console.log('rearranging...');
-  $('#App').append($('.slide:first-child'));
+  $('.slide:last-child').fadeOut();
+  window.setTimeout(() => {
+    $('#App').prepend($('.slide:last-child'));
+    $('.slide:first-child').show();
+  }, slideRotationInterval / 2);
 };
 
 function renderSlide(item) {
@@ -36,16 +50,12 @@ function buildTemplate(item) {
   console.log('item', item);
   let template = `
           <article class="slide" >
-          `
-  if (item.media && item.media.thumbnail.length) {
-    template += `<div class="background-image" data-img-url="${item.media.thumbnail[0].url[0]}"></div>`;
-  } else {
-    template += `<div class="background-image generic-background-image"></div>`;
-  }
-  template += `<div class="text-overlay">  
+            <div class="background-image" data-img-url="${item.metadata.image}"></div>
+              <div class="text-overlay">  
               <h1>${item.title}</h1>
-              <p class="desc">${item.description}
-              <p class="date">${moment(item.pubDate).fromNow()}
+              <p class="desc">${item.metadata.description}</p>
+              <p class="date">${moment(item.pubDate).fromNow()}</p>
+              <p class="source">Source: ${item.metadata.publisher || source}</p>
             </div>
           </article>
         `;
